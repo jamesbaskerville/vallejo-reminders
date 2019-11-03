@@ -1,5 +1,5 @@
 class SmsMailer < ActionMailer::Base
-  default from: '1530@vallejo.com'
+  default from: 'vallejo.reminders@gmail.com'
 
   def rent_email
     @email = params[:email]
