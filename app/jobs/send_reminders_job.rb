@@ -17,13 +17,21 @@ class SendRemindersJob < ApplicationJob
     time.strftime('%d') === "01"
   end
 
+  def numbers
+    @numbers ||= Rails.application.credentials.dig(:numbers)
+  end
+
   def send_rent_message
-    email = SMSEasy::Client.sms_address(Rails.application.credentials.dig(:my_number), "at&t")
-    SmsMailer.with(email: email).rent_email.deliver_now
+    numbers.each do |number|
+      email = SMSEasy::Client.sms_address(number.to_s, "at&t")
+      SmsMailer.with(email: email).rent_email.deliver_now
+    end
   end
 
   def send_garbage_message
-    email = SMSEasy::Client.sms_address(Rails.application.credentials.dig(:my_number), "at&t")
-    SmsMailer.with(email: email).garbage_email.deliver_now
+    numbers.each do |number|
+      email = SMSEasy::Client.sms_address(number.to_s, "at&t")
+      SmsMailer.with(email: email).garbage_email.deliver_now
+    end
   end
 end
