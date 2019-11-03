@@ -1,11 +1,9 @@
 class SendRemindersJob < ApplicationJob
-  SMS_CLIENT_YAML_PATH = "#{Rails.root}/config/sms.yml".freeze
-
   def perform
     time = Time.current
 
-    send_garbage_message if true
-    send_rent_message if true
+    send_garbage_message if is_monday?(time)
+    send_rent_message if is_first_of_month?(time)
   end
 
   private
