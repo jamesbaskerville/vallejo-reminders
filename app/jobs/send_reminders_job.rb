@@ -2,7 +2,8 @@ class SendRemindersJob < ApplicationJob
   def perform
     time = Time.current
 
-    send_garbage_message if is_monday?(time)
+    # Send garbage message every day to test heroku
+    send_garbage_message
     send_rent_message if is_first_of_month?(time)
   end
 
