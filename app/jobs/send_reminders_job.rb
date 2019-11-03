@@ -27,11 +27,4 @@ class SendRemindersJob < ApplicationJob
     email = SMSEasy::Client.sms_address(Figaro.env.my_number, "at&t")
     SmsMailer.with(email: email).garbage_email.deliver_now
   end
-
-  def sms_client
-    @sms_client ||= begin
-      SMSEasy::Client.config['from_address'] = "1530@vallejo.com"
-      SMSEasy::Client.new
-    end
-  end
 end
