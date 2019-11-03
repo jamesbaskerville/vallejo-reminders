@@ -1,5 +1,5 @@
 ActionMailer::Base.smtp_settings = {
-  domain:         'vallejoreminders.com',
+  domain:         'https://vallehoes-reminder-bot.herokuapp.com/',
   address:        "smtp.sendgrid.net",
   port:            587,
   authentication: :plain,
