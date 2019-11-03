@@ -1,14 +1,11 @@
 class SendRemindersJob < ApplicationJob
   SMS_CLIENT_YAML_PATH = "#{Rails.root}/config/sms.yml".freeze
 
-  RENT_MESSAGE = "Don't forget to pay rent today!"
-  TRASH_MESSAGE = "Remember to take out the trash!"
-
   def perform
     time = Time.current
 
-    send_message(TRASH_MESSAGE) if true
-    send_message(RENT_MESSAGE) if true
+    send_garbage_message if true
+    send_rent_message if true
   end
 
   private
@@ -21,13 +18,19 @@ class SendRemindersJob < ApplicationJob
     time.strftime('%d') === "01"
   end
 
-  def send_message(message)
-    sms_client.deliver(Figaro.env.my_number, "at&t", message)
+  def send_rent_message
+    email = SMSEasy::Client.sms_address(Figaro.env.my_number, "at&t")
+    SmsMailer.with(email: email).rent_email.deliver_now
+  end
+
+  def send_garbage_message
+    email = SMSEasy::Client.sms_address(Figaro.env.my_number, "at&t")
+    SmsMailer.with(email: email).garbage_email.deliver_now
   end
 
   def sms_client
     @sms_client ||= begin
-      SMSEasy::Client.config['from_address'] = "noreply@example.com"
+      SMSEasy::Client.config['from_address'] = "1530@vallejo.com"
       SMSEasy::Client.new
     end
   end
