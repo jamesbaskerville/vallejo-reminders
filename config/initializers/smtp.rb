@@ -4,5 +4,5 @@ ActionMailer::Base.smtp_settings = {
   port:            587,
   authentication: :plain,
   user_name:      'apikey',
-  password:       Figaro.env.sendgrid_api_key
+  password:       Rails.application.credentials.dig(:sendgrid_api_key)
 }

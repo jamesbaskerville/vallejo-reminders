@@ -17,12 +17,12 @@ class SendRemindersJob < ApplicationJob
   end
 
   def send_rent_message
-    email = SMSEasy::Client.sms_address(Figaro.env.my_number, "at&t")
+    email = SMSEasy::Client.sms_address(Rails.application.credentials.dig(:my_number), "at&t")
     SmsMailer.with(email: email).rent_email.deliver_now
   end
 
   def send_garbage_message
-    email = SMSEasy::Client.sms_address(Figaro.env.my_number, "at&t")
+    email = SMSEasy::Client.sms_address(Rails.application.credentials.dig(:my_number), "at&t")
     SmsMailer.with(email: email).garbage_email.deliver_now
   end
 end
